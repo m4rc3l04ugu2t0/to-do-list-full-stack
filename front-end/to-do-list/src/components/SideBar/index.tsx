@@ -2,7 +2,7 @@ import { CSSProperties, useState } from "react";
 import { BtnSideBar } from "./btnSideBar";
 
 export const SideBar = () => {
-    const [toggleSideBar, setToggleSideBar] = useState(true); // Estado para controlar a visibilidade
+    const [toggleSideBar, setToggleSideBar] = useState(false); // Estado para controlar a visibilidade
     const styleBtnSideBar: CSSProperties = {
         position: "absolute",
         top: "0",

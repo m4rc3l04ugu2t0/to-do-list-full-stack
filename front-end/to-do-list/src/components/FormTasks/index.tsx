@@ -11,13 +11,9 @@ export const FormTask = ({
 }) => {
     const { register, handleSubmit } = useForm<PropTasks>();
 
-    if (mutation.isPending) {
-        return;
-    }
-
     return (
         <form
-            method="put"
+            method="post"
             action="post"
             onSubmit={handleSubmit(method)}
             className="flex flex-col gap-3"

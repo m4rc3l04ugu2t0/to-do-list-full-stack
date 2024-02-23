@@ -2,12 +2,15 @@ import { SubmitHandler } from "react-hook-form";
 import { useUpdateTask } from "../../services/mutations";
 import { FormTask } from "../FormTasks";
 import { PropTasks } from "../../types/tasksTypes";
+import { Dispatch, SetStateAction } from "react";
 
 interface EditTaskProps {
     edit: boolean;
-    dataUpdate?: PropTasks; // Making dataUpdate optional
+    dataUpdate: PropTasks;
+    setIsEdit: Dispatch<
+        SetStateAction<{ edit: boolean; dataUpdate: PropTasks }>
+    >;
 }
-
 export const EditTask = ({ edit, dataUpdate }: EditTaskProps) => {
     const updateTaskMutation = useUpdateTask();
     // console.log(dataUpdate);
