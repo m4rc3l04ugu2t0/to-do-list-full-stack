@@ -19,6 +19,10 @@ export const createTask = async (data: PropTasks) => {
     return await response.data;
 };
 
+export const updateTask = async (data: PropTasks) => {
+    await axios.put(`${BASE_URL}${data._id}`, data);
+};
+
 export const deleteTask = async (id: string) => {
     const response = await axios.delete(`${BASE_URL}${id}`);
     return await response.data;

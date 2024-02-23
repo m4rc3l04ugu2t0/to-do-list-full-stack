@@ -3,6 +3,8 @@ import { useIdTask, useTasks } from "../../services/queries";
 import { CreateTask } from "../CreateTask";
 import { ButtonCreateTask } from "./ButtonCrateTask";
 import { DeleteTask } from "../DeleteTask";
+import { EditTask } from "../EditTask";
+import { PropTasks } from "../../types/tasksTypes";
 
 export const Tasks = () => {
     const tasksIdQuery = useIdTask();
@@ -12,6 +14,11 @@ export const Tasks = () => {
     const [isDelete, setDelete] = useState({
         id: "",
         isDelete: false,
+    });
+
+    const [isEdit, setIsEdit] = useState({
+        edit: false,
+        dataUpdate: {} as PropTasks,
     });
 
     if (tasksIdQuery.isLoading) {
@@ -41,7 +48,15 @@ export const Tasks = () => {
                         <p className="text-lg">{data?.description}</p>
                         <div className="flex gap-6 items-center justify-end">
                             <div className="flex items-center justify-center">
-                                <button className="bi bi-pencil text-2xl text-blue-500 w-10 h-10 rounded hover:bg-blue-500 hover:text-white transition duration-300"></button>
+                                <button
+                                    className="bi bi-pencil text-2xl text-blue-500 w-10 h-10 rounded hover:bg-blue-500 hover:text-white transition duration-300"
+                                    onClick={() =>
+                                        setIsEdit((prevState) => ({
+                                            dataUpdate: data,
+                                            edit: !prevState.edit,
+                                        }))
+                                    }
+                                ></button>
                             </div>
 
                             <div className="flex items-center justify-center">
@@ -63,6 +78,7 @@ export const Tasks = () => {
             </div>
             <DeleteTask isDelete={isDelete.isDelete} id={isDelete.id} />
             <CreateTask isCreate={isCreate} />
+            <EditTask edit={isEdit.edit} dataUpdate={isEdit.dataUpdate} />
         </div>
     );
 };
