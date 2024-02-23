@@ -13,3 +13,13 @@ export const getTasks = async (id: string) => {
 
     return await response.data;
 };
+
+export const createTask = async (data: PropTasks) => {
+    const response = await axios.post(BASE_URL, data);
+    return await response.data;
+};
+
+export const deleteTask = async (id: string) => {
+    const response = await axios.delete(`${BASE_URL}${id}`);
+    return await response.data;
+};

@@ -3,7 +3,7 @@ import { getIdTasks, getTasks } from "./api";
 
 export const useIdTask = () => {
     return useQuery({
-        queryKey: ["postsId"],
+        queryKey: ["tasksId"],
         queryFn: getIdTasks,
     });
 };

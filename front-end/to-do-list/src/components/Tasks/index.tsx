@@ -43,11 +43,10 @@ export const Tasks = () => {
                             <button className="bi bi-pencil text-2xl"></button>
                             <button
                                 className="bi bi-trash text-2xl"
-                                disabled={isDelete.isDelete}
                                 onClick={() =>
                                     setDelete((prevState) => {
                                         return {
-                                            id: data?.id,
+                                            id: data?._id,
                                             isDelete: !prevState.isDelete,
                                         };
                                     })
@@ -57,7 +56,7 @@ export const Tasks = () => {
                     </div>
                 ))}
             </div>
-            <DeleteTask isDelete={isDelete.isDelete} />
+            <DeleteTask isDelete={isDelete.isDelete} id={isDelete.id} />
             <CreateTask isCreate={isCreate} />
         </div>
     );
