@@ -31,7 +31,7 @@ export const Tasks = () => {
                 {tasksQuery.map(({ data }) => (
                     <div
                         key={crypto.randomUUID()}
-                        className="border-solid border-white border-2 rounded p-4 w-10/12 md:max-w-3xl relative"
+                        className="border-solid border-white border-2 rounded p-4 w-10/12 md:max-w-3xl"
                     >
                         <div className="flex justify-between">
                             <h1 className="text-xl">{data?.title}</h1>
@@ -40,18 +40,23 @@ export const Tasks = () => {
 
                         <p className="text-lg">{data?.description}</p>
                         <div className="flex gap-6 items-center justify-end">
-                            <button className="bi bi-pencil text-2xl"></button>
-                            <button
-                                className="bi bi-trash text-2xl"
-                                onClick={() =>
-                                    setDelete((prevState) => {
-                                        return {
-                                            id: data?._id,
-                                            isDelete: !prevState.isDelete,
-                                        };
-                                    })
-                                }
-                            ></button>
+                            <div className="flex items-center justify-center">
+                                <button className="bi bi-pencil text-2xl text-blue-500 w-10 h-10 rounded hover:bg-blue-500 hover:text-white transition duration-300"></button>
+                            </div>
+
+                            <div className="flex items-center justify-center">
+                                <button
+                                    className="bi bi-trash text-2xl text-red-500 w-10 h-10 rounded hover:bg-red-500 hover:text-white transition duration-300"
+                                    onClick={() =>
+                                        setDelete((prevState) => {
+                                            return {
+                                                id: data?._id,
+                                                isDelete: !prevState.isDelete,
+                                            };
+                                        })
+                                    }
+                                ></button>
+                            </div>
                         </div>
                     </div>
                 ))}

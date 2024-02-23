@@ -35,7 +35,9 @@ export const CreateTask = ({ isCreate: isEditing }: { isCreate: boolean }) => {
                 />
 
                 <div className="flex gap-3">
-                    <button className="bg-red-500 p-2 rounded">Cancel</button>
+                    <button className="bg-red-500 p-2 rounded" type="button">
+                        Cancel
+                    </button>
                     <input
                         type="submit"
                         className="bg-green-500 p-2 rounded"

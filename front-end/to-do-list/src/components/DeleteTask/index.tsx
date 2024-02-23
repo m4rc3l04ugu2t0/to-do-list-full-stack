@@ -17,8 +17,6 @@ export const DeleteTask = ({
         }
     }, [isDelete]);
 
-    console.log(id);
-
     return (
         <div
             className={`w-4/6 h-max bg-gray-800 absolute right-16 top-44 text-wrap md:max-w-max rounded p-3 ${
