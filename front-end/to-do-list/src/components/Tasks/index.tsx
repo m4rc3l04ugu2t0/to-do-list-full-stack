@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { useIdTask, useTasks } from "../../services/queries";
-import { EditTask } from "../EditTask";
+import { CreateTask } from "../CreateTask";
 import { ButtonCreateTask } from "./ButtonCrateTask";
+import { DeleteTask } from "../DeleteTask";
 
 export const Tasks = () => {
     const tasksIdQuery = useIdTask();
     const tasksQuery = useTasks(tasksIdQuery.data);
 
-    const [isEditing, setIsEditing] = useState(false);
+    const [isCreate, setCreate] = useState(false);
+    const [isDelete, setDelete] = useState({
+        id: "",
+        isDelete: false,
+    });
 
     if (tasksIdQuery.isLoading) {
         return <h1>Loading...</h1>;
@@ -19,14 +24,14 @@ export const Tasks = () => {
                 <h1 className="m-auto">Tasks</h1>
                 <ButtonCreateTask
                     className="mr-4"
-                    onClick={() => setIsEditing((prev) => !prev)}
+                    onClick={() => setCreate((prev) => !prev)}
                 />
             </div>
-            <div className="w-full h-dvh py-5 overflow-y-auto flex flex-col items-center gap-5">
+            <div className="w-full h-dvh py-5 overflow-y-auto flex flex-col items-center gap-5 relative">
                 {tasksQuery.map(({ data }) => (
                     <div
                         key={crypto.randomUUID()}
-                        className="border-solid border-white border-2 rounded p-4 w-10/12 md:max-w-3xl"
+                        className="border-solid border-white border-2 rounded p-4 w-10/12 md:max-w-3xl relative"
                     >
                         <div className="flex justify-between">
                             <h1 className="text-xl">{data?.title}</h1>
@@ -36,12 +41,24 @@ export const Tasks = () => {
                         <p className="text-lg">{data?.description}</p>
                         <div className="flex gap-6 items-center justify-end">
                             <button className="bi bi-pencil text-2xl"></button>
-                            <button className="bi bi-trash text-2xl"></button>
+                            <button
+                                className="bi bi-trash text-2xl"
+                                disabled={isDelete.isDelete}
+                                onClick={() =>
+                                    setDelete((prevState) => {
+                                        return {
+                                            id: data?.id,
+                                            isDelete: !prevState.isDelete,
+                                        };
+                                    })
+                                }
+                            ></button>
                         </div>
                     </div>
                 ))}
             </div>
-            <EditTask isEditing={isEditing} />
+            <DeleteTask isDelete={isDelete.isDelete} />
+            <CreateTask isCreate={isCreate} />
         </div>
     );
 };
