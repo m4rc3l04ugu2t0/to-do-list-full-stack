@@ -78,7 +78,7 @@ export const Tasks = () => {
             </div>
             <DeleteTask isDelete={isDelete.isDelete} id={isDelete.id} />
             <CreateTask isCreate={isCreate} />
-            <EditTask edit={isEdit.edit} dataUpdate={isEdit.dataUpdate} />
+            <EditTask edit={isEdit.edit} dataUpdate={isEdit.dataUpdate} setIsEdit={setIsEdit}/>
         </div>
     );
 };

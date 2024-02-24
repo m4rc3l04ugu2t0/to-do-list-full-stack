@@ -9,13 +9,18 @@ export const FormTask = ({
     method: SubmitHandler<PropTasks>;
     mutation: UseMutationResult<void, Error, PropTasks, unknown>;
 }) => {
-    const { register, handleSubmit } = useForm<PropTasks>();
+    const { register, handleSubmit, reset } = useForm<PropTasks>();
+
+    const handleFormSubmit = async (data: PropTasks) => {
+        await method(data);
+        reset();
+    };
 
     return (
         <form
             method="post"
             action="post"
-            onSubmit={handleSubmit(method)}
+            onSubmit={handleSubmit(handleFormSubmit)}
             className="flex flex-col gap-3"
         >
             <input
