@@ -40,6 +40,24 @@ router.post("/tasks", async (req, res) => {
     }
 });
 
+router.put("/tasks/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, created, updated, done } = req.body;
+        const updatedTask = await TaskModel.updateTask(
+            id,
+            title,
+            description,
+            created,
+            updated,
+            done
+        );
+        res.status(200).json(updatedTask);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.delete("/tasks/:id", async (req, res) => {
     try {
         const { id } = req.params;

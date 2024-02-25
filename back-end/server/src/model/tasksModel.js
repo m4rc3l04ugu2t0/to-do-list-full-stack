@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const tasksSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    created: { type: Date, default: Date.now },
-    updated: { type: Date, default: Date.now },
+    created: { type: Date, default: Date.toString() },
+    updated: { type: Date, default: Date.toString() },
     done: { type: Boolean, default: false },
 });
 
@@ -37,6 +37,20 @@ class ClassTaskModel {
             updated: this.updated,
             done: this.done,
         });
+    }
+
+    static async updateTask(id, title, description, created, updated, done) {
+        const updatedTask = await tasksModel.updateOne(
+            { _id: id },
+            {
+                title: title,
+                description: description,
+                created: created,
+                updated: updated,
+                done: done,
+            }
+        );
+        return updatedTask;
     }
 
     static async deleteTask(id) {
