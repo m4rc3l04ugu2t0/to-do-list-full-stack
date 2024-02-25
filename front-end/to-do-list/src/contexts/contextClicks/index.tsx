@@ -2,11 +2,15 @@ import { ReactNode, createContext, useReducer, Dispatch } from "react";
 import { PropAction, reducer } from "../reducer";
 
 export interface PropInitialState {
-    closeModelCreateTask: boolean;
+    closeModelCreateTask?: boolean;
+    closeModelEditTask?: boolean;
+    closeDeleteTask?: boolean;
 }
 
 const initialState: PropInitialState = {
     closeModelCreateTask: false,
+    closeModelEditTask: false,
+    closeDeleteTask: false,
 };
 
 interface ContextType {

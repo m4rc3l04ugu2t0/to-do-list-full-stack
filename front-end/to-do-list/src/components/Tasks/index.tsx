@@ -4,25 +4,16 @@ import { CreateTask } from "../CreateTask";
 import { ButtonCreateTask } from "./ButtonCrateTask";
 import { DeleteTask } from "../DeleteTask";
 import { EditTask } from "../EditTask";
-import { PropTasks } from "../../types/tasksTypes";
 import { ClicksProvider } from "../../contexts/contextClicks";
-
-// import { actionsType } from "../../contexts/reducer/actionsType";
+import { BtnEditTask } from "./BtnEditTask";
+import { PropTasks } from "../../types/tasksTypes";
+import { BtnDeleteTask } from "./BtnDeleteTask";
 
 export const Tasks = () => {
     const tasksIdQuery = useIdTask();
     const tasksQuery = useTasks(tasksIdQuery.data);
 
-    // const [isCreate, setCreate] = useState(false);
-    const [isDelete, setDelete] = useState({
-        id: "",
-        isDelete: false,
-    });
-
-    const [isEdit, setIsEdit] = useState({
-        edit: false,
-        dataUpdate: {} as PropTasks,
-    });
+    const [data, setData] = useState({} as PropTasks);
 
     if (tasksIdQuery.isLoading) {
         return <h1>Loading...</h1>;
@@ -49,42 +40,23 @@ export const Tasks = () => {
                             <p className="text-lg">{data?.description}</p>
                             <div className="flex gap-6 items-center justify-end">
                                 <div className="flex items-center justify-center">
-                                    <button
-                                        className="bi bi-pencil text-2xl text-blue-500 w-10 h-10 rounded hover:bg-blue-500 hover:text-white transition duration-300"
-                                        onClick={() =>
-                                            setIsEdit((prevState) => ({
-                                                dataUpdate: data,
-                                                edit: !prevState.edit,
-                                            }))
-                                        }
-                                    ></button>
+                                    <BtnEditTask
+                                        onclick={() => setData(data)}
+                                    />
                                 </div>
 
                                 <div className="flex items-center justify-center">
-                                    <button
-                                        className="bi bi-trash text-2xl text-red-500 w-10 h-10 rounded hover:bg-red-500 hover:text-white transition duration-300"
-                                        onClick={() =>
-                                            setDelete((prevState) => {
-                                                return {
-                                                    id: data?._id,
-                                                    isDelete:
-                                                        !prevState.isDelete,
-                                                };
-                                            })
-                                        }
-                                    ></button>
+                                    <BtnDeleteTask
+                                        onclick={() => setData(data)}
+                                    />
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
-                <DeleteTask isDelete={isDelete.isDelete} id={isDelete.id} />
+                <DeleteTask data={data} />
                 <CreateTask />
-                <EditTask
-                    edit={isEdit.edit}
-                    dataUpdate={isEdit.dataUpdate}
-                    setIsEdit={setIsEdit}
-                />
+                <EditTask data={data} />
             </div>
         </ClicksProvider>
     );

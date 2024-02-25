@@ -3,12 +3,14 @@ import { PropTasks } from "../../types/tasksTypes";
 import { useCreateTask } from "../../services/mutations";
 import { FormTask } from "../FormTasks";
 import { useContextClick } from "../../contexts/contextClicks/useContextClicks";
+import { actionsType } from "../../contexts/reducer/actionsType";
 
 export const CreateTask = () => {
     const createTaskMuataion = useCreateTask();
     const { state } = useContextClick();
 
     const handleCreateTask: SubmitHandler<PropTasks> = (data) => {
+        console.log("create");
         createTaskMuataion.mutate(data);
     };
 
@@ -18,7 +20,11 @@ export const CreateTask = () => {
                 state.closeModelCreateTask ? "block" : "hidden"
             }`}
         >
-            <FormTask method={handleCreateTask} mutation={createTaskMuataion} />
+            <FormTask
+                method={handleCreateTask}
+                mutation={createTaskMuataion}
+                actionType={actionsType.CLOSE_CREATE_TASK}
+            />
         </div>
     );
 };

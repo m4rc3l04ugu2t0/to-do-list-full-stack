@@ -1,26 +1,16 @@
-import { useEffect, useState } from "react";
 import { useDeleteTask } from "../../services/mutations";
+import { useContextClick } from "../../contexts/contextClicks/useContextClicks";
+import { actionsType } from "../../contexts/reducer/actionsType";
+import { PropTasks } from "../../types/tasksTypes";
 
-export const DeleteTask = ({
-    isDelete,
-    id,
-}: {
-    isDelete: boolean;
-    id: string;
-}) => {
+export const DeleteTask = ({ data }: { data: PropTasks }) => {
     const { mutate } = useDeleteTask();
-    const [taskDelete, setTaskDelete] = useState(false);
-
-    useEffect(() => {
-        if (isDelete) {
-            setTaskDelete(true);
-        }
-    }, [isDelete]);
+    const { state, dispatch } = useContextClick();
 
     return (
         <div
-            className={`w-4/6 h-max bg-gray-800 absolute right-16 top-44 text-wrap md:max-w-max rounded p-3 ${
-                taskDelete ? "block" : "hidden"
+            className={`w-4/6 h-auto bg-gray-800 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
+                state.closeDeleteTask ? "block" : "hidden"
             }`}
         >
             <h1>Delete Task</h1>
@@ -28,15 +18,17 @@ export const DeleteTask = ({
             <div className="flex gap-3">
                 <button
                     className="bg-red-500 p-2 rounded"
-                    onClick={() => setTaskDelete((prevState) => !prevState)}
+                    onClick={() =>
+                        dispatch({ type: actionsType.CLOSE_DELETE_TASK })
+                    }
                 >
                     Cancel
                 </button>
                 <button
                     className="bg-green-500 p-2 rounded"
                     onClick={() => {
-                        mutate(id);
-                        setTaskDelete((prevState) => !prevState);
+                        mutate(data._id);
+                        dispatch({ type: actionsType.CLOSE_DELETE_TASK });
                     }}
                 >
                     Save
