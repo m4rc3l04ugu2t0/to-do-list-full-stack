@@ -1,16 +1,17 @@
-export const ButtonCreateTask = ({
-    className,
-    onClick,
-}: {
-    className?: string;
-    onClick: () => void;
-}) => {
+import { useContextClick } from "../../contexts/contextClicks/useContextClicks";
+import { actionsType } from "../../contexts/reducer/actionsType";
+
+export const ButtonCreateTask = ({ className }: { className?: string }) => {
+    const { dispatch } = useContextClick();
+
     return (
         <div className={className}>
             {" "}
             <button
                 className="bg-transparent bg-slate-600 rounded bi bi-plus-lg text-3xl"
-                onClick={onClick}
+                onClick={() =>
+                    dispatch({ type: actionsType.CLOSE_CREATE_TASK })
+                }
             ></button>
         </div>
     );

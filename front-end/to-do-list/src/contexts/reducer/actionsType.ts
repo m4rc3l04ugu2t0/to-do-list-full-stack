@@ -1,0 +1,11 @@
+export type PropsActionType = {
+    CLOSE_EDIT_TASK: "CLOSE_EDIT_TASK";
+    CLOSE_DELETE_TASK: "CLOSE_DELETE_TASK";
+    CLOSE_CREATE_TASK: "CLOSE_CREATE_TASK";
+};
+
+export const actionsType: PropsActionType = {
+    CLOSE_EDIT_TASK: "CLOSE_EDIT_TASK",
+    CLOSE_DELETE_TASK: "CLOSE_DELETE_TASK",
+    CLOSE_CREATE_TASK: "CLOSE_CREATE_TASK",
+};

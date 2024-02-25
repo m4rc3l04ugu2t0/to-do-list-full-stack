@@ -2,39 +2,32 @@ import { SubmitHandler } from "react-hook-form";
 import { useUpdateTask } from "../../services/mutations";
 import { FormTask } from "../FormTasks";
 import { PropTasks } from "../../types/tasksTypes";
-import { Dispatch, SetStateAction } from "react";
+import { actionsType } from "../../contexts/reducer/actionsType";
+import { useContextClick } from "../../contexts/contextClicks/useContextClicks";
 
-interface EditTaskProps {
-    edit: boolean;
-    dataUpdate: PropTasks;
-    setIsEdit: Dispatch<
-        SetStateAction<{ edit: boolean; dataUpdate: PropTasks }>
-    >;
-}
-export const EditTask = ({ edit, dataUpdate }: EditTaskProps) => {
+export const EditTask = ({ data }: { data: PropTasks }) => {
     const updateTaskMutation = useUpdateTask();
-    // console.log(dataUpdate);
+    const { state } = useContextClick();
 
-    const handleUpdateTask: SubmitHandler<PropTasks> = (data) => {
-        if (dataUpdate && dataUpdate._id) {
-            // Ensure _id is defined
-            updateTaskMutation.mutate({
-                ...dataUpdate,
-                ...data, // Assuming you want to merge with the incoming data
-            });
-        } else {
-            console.error("Task _id is undefined");
-            // Handle the case where _id is undefined, e.g., show an error message
-        }
+    const handleUpdateTask: SubmitHandler<PropTasks> = (updateData) => {
+        console.log("update");
+        updateTaskMutation.mutate({
+            ...data,
+            ...updateData, // Assuming you want to merge with the incoming data
+        });
     };
 
     return (
         <div
             className={`w-4/6 h-auto bg-gray-800 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
-                edit ? "block" : "hidden"
+                state.closeModelEditTask ? "block" : "hidden"
             }`}
         >
-            <FormTask method={handleUpdateTask} mutation={updateTaskMutation} />
+            <FormTask
+                method={handleUpdateTask}
+                mutation={updateTaskMutation}
+                actionType={actionsType.CLOSE_EDIT_TASK}
+            />
         </div>
     );
 };
