@@ -1,30 +1,52 @@
-require("dotenv").config();
+import "dotenv/config";
+import { fastify } from "fastify";
+import { DataBase } from "./database.js";
+import { DataBasePostgres } from "./database-postgres.js";
 
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const routes = require("./routes");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const server = fastify();
 
-mongoose
-    .connect(process.env.CONNECTIONSTRING)
-    .then(() => {
-        app.emit("connected");
-    })
-    .catch((err) => {
-        console.log(err.message);
+const database = new DataBasePostgres();
+
+server.get("/user", (request) => {
+    const search = request.query.search;
+
+    const user = database.list(search);
+
+    return user;
+});
+
+server.post("/user", (request, reply) => {
+    const { name, email } = request.body;
+
+    database.create({
+        name,
+        email,
     });
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
+    return reply.status(201).send();
+});
 
-app.use(routes);
+server.put("/user/:id", (request, reply) => {
+    const userID = request.params.id;
+    const { id, name, email } = request.body;
 
-app.on("connected", () => {
-    app.listen(process.env.PORT || 8080, () => {
-        console.log("Server running: http://localhost:8080");
+    database.update(userID, {
+        id,
+        name,
+        email,
     });
+
+    return reply.status(204).send();
+});
+
+server.delete("/user/:id", (request, reply) => {
+    const userId = request.params.id;
+
+    database.delete(userId);
+
+    return reply.status(204).send();
+});
+
+server.listen({
+    port: 3333,
 });
