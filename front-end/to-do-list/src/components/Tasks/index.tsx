@@ -8,16 +8,14 @@ import { ClicksProvider } from "../../contexts/contextClicks";
 import { BtnEditTask } from "./BtnEditTask";
 import { PropTasks } from "../../types/tasksTypes";
 import { BtnDeleteTask } from "./BtnDeleteTask";
+import { LoadingTasks } from "../LoadingTasks";
+import { NoTaskCreated } from "../NoTaskCreated";
 
 export const Tasks = () => {
     const tasksIdQuery = useIdTask();
     const tasksQuery = useTasks(tasksIdQuery.data);
 
     const [data, setData] = useState({} as PropTasks);
-
-    if (tasksIdQuery.isLoading) {
-        return <h1>Loading...</h1>;
-    }
 
     return (
         <ClicksProvider>
@@ -27,32 +25,38 @@ export const Tasks = () => {
                     <ButtonCreateTask className="mr-4" />
                 </div>
                 <div className="w-full h-dvh py-5 overflow-y-auto flex flex-col items-center gap-5 relative">
-                    {tasksQuery.map(({ data }) => (
-                        <div
-                            key={crypto.randomUUID()}
-                            className="border-solid border-white border-2 rounded p-4 w-10/12 md:max-w-3xl"
-                        >
-                            <div className="flex justify-between">
-                                <h1 className="text-xl">{data?.title}</h1>
-                                <p>Feb 21 18:21</p>
-                            </div>
-
-                            <p className="text-lg">{data?.description}</p>
-                            <div className="flex gap-6 items-center justify-end">
-                                <div className="flex items-center justify-center">
-                                    <BtnEditTask
-                                        onclick={() => setData(data)}
-                                    />
+                    {tasksIdQuery.isLoading ? (
+                        <LoadingTasks />
+                    ) : tasksQuery.length === 0 ? (
+                        <NoTaskCreated />
+                    ) : (
+                        tasksQuery.map(({ data }) => (
+                            <div
+                                key={crypto.randomUUID()}
+                                className="border-solid border-white border-2 rounded p-4 w-10/12 md:max-w-3xl"
+                            >
+                                <div className="flex justify-between">
+                                    <h1 className="text-xl">{data?.title}</h1>
+                                    <p>Feb 21 18:21</p>
                                 </div>
 
-                                <div className="flex items-center justify-center">
-                                    <BtnDeleteTask
-                                        onclick={() => setData(data)}
-                                    />
+                                <p className="text-lg">{data?.description}</p>
+                                <div className="flex gap-6 items-center justify-end">
+                                    <div className="flex items-center justify-center">
+                                        <BtnEditTask
+                                            onclick={() => setData(data)}
+                                        />
+                                    </div>
+
+                                    <div className="flex items-center justify-center">
+                                        <BtnDeleteTask
+                                            onclick={() => setData(data)}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
                 <DeleteTask data={data} />
                 <CreateTask />
