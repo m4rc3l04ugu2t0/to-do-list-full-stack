@@ -6,14 +6,21 @@
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "node --watch --trace-warnings server.js"
+        "dev": "tsx watch server.ts"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@fastify/cors": "^9.0.1",
         "dotenv": "^16.4.5",
         "fastify": "^4.26.1",
-        "postgres": "^3.4.3"
+        "mysql2": "^3.9.2",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.7.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.24",
+        "typescript": "^5.3.3"
     }
 }
