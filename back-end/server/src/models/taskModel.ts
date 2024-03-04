@@ -31,8 +31,19 @@ export const createTaskBD = async (task: Tasks) => {
     return createdTask;
 };
 
-export const deleteTask = async (id: string) => {
+export const deleteTaskBD = async (id: string) => {
     const conn = await connect();
-    const [result] = await conn.query("DELETE FROM tasks WHERE _id = ?", [id]);
-    return result;
+    const [deleteTaskBD] = await conn.query("DELETE FROM tasks WHERE id = ?", [
+        id,
+    ]);
+    return deleteTaskBD;
+};
+
+export const updatedTaskBD = async (id: string, task: Tasks) => {
+    const conn = await connect();
+    const [updatedTask] = await conn.query("UPDATE tasks SET ? WHERE id = ?", [
+        task,
+        id,
+    ]);
+    return updatedTask;
 };

@@ -1,6 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import Tasks from "../types/tasks";
-import { createTaskBD, getTasksBD, getTaskBD } from "../models/taskModel";
+import {
+    createTaskBD,
+    getTasksBD,
+    getTaskBD,
+    deleteTaskBD,
+    updatedTaskBD,
+} from "../models/taskModel";
+import { request } from "http";
 
 export const getTasks = async (
     request: FastifyRequest,
@@ -34,7 +41,16 @@ export const deleteTasks = async (
     reply: FastifyReply
 ) => {
     const { id } = request.params as { id: string };
-    console.log("id:", id);
-    const task = await deleteTask(id);
-    return reply.status(200).send(task);
+    const task = await deleteTaskBD(id);
+    return reply.status(204).send({ message: "Task deleted" });
+};
+
+export const updatedTask = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    const { id } = request.params as { id: string };
+    const data: Tasks = request.body as Tasks;
+    const task = await updatedTaskBD(id, data);
+    return reply.status(204).send({ message: "Task updated" });
 };
