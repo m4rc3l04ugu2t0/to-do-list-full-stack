@@ -28,3 +28,13 @@ export const postTasks = async (
 
     return reply.status(201).send(task);
 };
+
+export const deleteTasks = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    const { id } = request.params as { id: string };
+    console.log("id:", id);
+    const task = await deleteTask(id);
+    return reply.status(200).send(task);
+};
