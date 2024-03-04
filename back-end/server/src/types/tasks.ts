@@ -1,8 +1,8 @@
 export default interface Tasks {
-    id?: string;
+    _id: string;
     title: string;
     description: string;
-    author?: string;
-    content?: string;
-    created_at?: Date;
+    created?: Date;
+    updated?: Date;
+    done?: boolean;
 }
