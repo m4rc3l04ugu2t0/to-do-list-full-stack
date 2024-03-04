@@ -7,8 +7,13 @@ export const getTasksBD = async () => {
     return result;
 };
 
+export const getTaskBD = async (id: string) => {
+    const tasks = await connect();
+    const [task] = await tasks.query("SELECT * FROM tasks WHERE id = ?", [id]);
+    return task;
+};
+
 export const createTaskBD = async (task: Tasks) => {
-    const dateUTC = new Date(Date.now()).toUTCString();
     const { title, description } = task;
 
     const taskFormat = {
@@ -16,6 +21,18 @@ export const createTaskBD = async (task: Tasks) => {
         description,
         done: true,
     };
+
     const conn = await connect();
-    return await conn.query("INSERT INTO tasks SET ?", [taskFormat]);
+    const [createdTask] = await conn.query(
+        "INSERT INTO tasks SET ?",
+        taskFormat
+    );
+
+    return createdTask;
+};
+
+export const deleteTask = async (id: string) => {
+    const conn = await connect();
+    const [result] = await conn.query("DELETE FROM tasks WHERE _id = ?", [id]);
+    return result;
 };

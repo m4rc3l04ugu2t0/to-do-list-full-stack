@@ -2,7 +2,7 @@
     "name": "server",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "./src/server.ts",
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,7 @@
     "dependencies": {
         "@fastify/cors": "^9.0.1",
         "dotenv": "^16.4.5",
-        "fastify": "^4.26.1",
+        "fastify": "^4.26.2",
         "mysql2": "^3.9.2",
         "ts-node": "^10.9.2",
         "tsx": "^4.7.1"

@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
-import { getTasks, postTasks } from "./controllers/tasks-controller";
+import { getTask, getTasks, postTasks } from "./controllers/tasks-controller";
+import middleValidateTask from "./middlewares/middleValidateTask";
 
 export async function route(
     fastify: FastifyInstance,
@@ -7,5 +8,7 @@ export async function route(
 ) {
     fastify.get("/tasks", getTasks);
 
-    fastify.post("/tasks", postTasks);
+    fastify.get("/tasks/:id", getTask);
+
+    fastify.post("/tasks", { preHandler: [middleValidateTask] }, postTasks);
 }
