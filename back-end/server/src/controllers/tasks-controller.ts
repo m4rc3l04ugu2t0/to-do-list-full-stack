@@ -1,39 +1,32 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import Tasks from "../types/tasks";
 import {
-    createTaskBD,
-    getTasksBD,
-    getTaskBD,
     deleteTaskBD,
     updatedTaskBD,
+    getTasksByUserBD,
+    createTaskByUserBD,
 } from "../models/taskModel";
-import { request } from "http";
+import { User } from "../types/user";
 
-export const getTasks = async (
+// contollers user
+
+export const createTaskByUser = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
-    const tasks = await getTasksBD();
-
-    return reply.status(200).send(tasks);
-};
-
-export const getTask = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    console.log("id:", id);
-    const task = await getTaskBD(id);
-    return reply.status(200).send(task);
+    const data: Tasks = request.body as Tasks;
+    const task = await createTaskByUserBD(data, id);
+    return reply.status(201).send(task);
 };
 
-export const postTasks = async (
+export const getTasksByUser = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
-    const data: Tasks = request.body as Tasks;
-    console.log(data);
-    const task = await createTaskBD(data);
-
-    return reply.status(201).send(task);
+    const { id } = request.params as { id: string };
+    const tasks = await getTasksByUserBD(id);
+    return reply.status(200).send(tasks);
 };
 
 export const deleteTasks = async (

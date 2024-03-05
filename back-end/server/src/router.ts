@@ -1,24 +1,8 @@
-import { FastifyInstance, FastifyPluginOptions } from "fastify";
-import {
-    deleteTasks,
-    getTask,
-    getTasks,
-    postTasks,
-    updatedTask,
-} from "./controllers/tasks-controller";
-import middleValidateTask from "./middlewares/middleValidateTask";
+import { app } from "./server";
+import { UserRoutes } from "./routers/UserRouter/UserRouter";
+import { TasksRoutes } from "./routers/TasksRouter/TasksRouter";
 
-export async function route(
-    fastify: FastifyInstance,
-    opitions: FastifyPluginOptions
-) {
-    fastify.get("/tasks", getTasks);
-
-    fastify.get("/tasks/:id", getTask);
-
-    fastify.post("/tasks", { preHandler: [middleValidateTask] }, postTasks);
-
-    fastify.delete("/tasks/:id", deleteTasks);
-
-    fastify.put("/tasks/:id", updatedTask);
+export async function routes() {
+    app.register(UserRoutes);
+    app.register(TasksRoutes);
 }
