@@ -10,7 +10,7 @@ export const EditTask = ({ data }: { data: PropTasks }) => {
     const { state } = useContextClick();
 
     const handleUpdateTask: SubmitHandler<PropTasks> = (updateData) => {
-        console.log("update");
+        console.log(updateData);
         updateTaskMutation.mutate({
             ...data,
             ...updateData, // Assuming you want to merge with the incoming data

@@ -1,36 +1,37 @@
 import { useState } from "react";
-import { useIdTask, useTasks } from "../../services/queries";
+import { useUserByTasks } from "../../services/queries";
 import { CreateTask } from "../CreateTask";
 import { ButtonCreateTask } from "./ButtonCrateTask";
 import { DeleteTask } from "../DeleteTask";
 import { EditTask } from "../EditTask";
-import { ClicksProvider } from "../../contexts/contextClicks";
 import { BtnEditTask } from "./BtnEditTask";
 import { PropTasks } from "../../types/tasksTypes";
 import { BtnDeleteTask } from "./BtnDeleteTask";
 import { LoadingTasks } from "../LoadingTasks";
 import { NoTaskCreated } from "../NoTaskCreated";
+import { FormUser } from "../FormUser";
 
 export const Tasks = () => {
-    const tasksIdQuery = useIdTask();
-    const tasksQuery = useTasks(tasksIdQuery.data);
-
+    const tasksQuery = useUserByTasks();
     const [data, setData] = useState({} as PropTasks);
 
     return (
-        <ClicksProvider>
-            <div className="flex flex-col w-full">
-                <div className="flex w-full h-12 border-solid border-slate-800 border-b-2  items-center">
-                    <h1 className="m-auto">Tasks</h1>
-                    <ButtonCreateTask className="mr-4" />
-                </div>
-                <div className="w-full h-dvh py-5 overflow-y-auto flex flex-col items-center gap-5 relative">
-                    {tasksIdQuery.isLoading ? (
-                        <LoadingTasks />
-                    ) : tasksQuery.length === 0 ? (
-                        <NoTaskCreated />
-                    ) : (
-                        tasksQuery.map(({ data }) => (
+        <div className="flex flex-col w-full">
+            <div className="flex w-full h-12 border-solid border-slate-800 border-b-2  items-center justify-between">
+                <h1 className="m-auto">Tasks</h1>
+                <ButtonCreateTask className="mr-4" />
+            </div>
+            <FormUser />
+            <div className="w-full h-dvh py-5 overflow-y-auto flex flex-col items-center gap-5 relative">
+                {tasksQuery.isLoading ? (
+                    <LoadingTasks />
+                ) : tasksQuery.data.length === 0 ? (
+                    <NoTaskCreated />
+                ) : (
+                    tasksQuery.data.map((data: PropTasks) => {
+                        console.log(tasksQuery);
+                        console.log(data);
+                        return (
                             <div
                                 key={crypto.randomUUID()}
                                 className="border-solid border-white border-2 rounded p-4 w-10/12 md:max-w-3xl"
@@ -55,13 +56,13 @@ export const Tasks = () => {
                                     </div>
                                 </div>
                             </div>
-                        ))
-                    )}
-                </div>
-                <DeleteTask data={data} />
-                <CreateTask />
-                <EditTask data={data} />
+                        );
+                    })
+                )}
             </div>
-        </ClicksProvider>
+            <DeleteTask data={data} />
+            <CreateTask />
+            <EditTask data={data} />
+        </div>
     );
 };

@@ -1,20 +1,27 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { getIdTasks, getTasks } from "./api";
+import { useQuery } from "@tanstack/react-query";
+import { getIdUser, getUserByTasks } from "./api";
 
-export const useIdTask = () => {
+export const useIdUser = () => {
     return useQuery({
-        queryKey: ["tasksId"],
-        queryFn: getIdTasks,
+        queryKey: ["userId"],
+        queryFn: getIdUser,
     });
 };
 
-export const useTasks = (ids: string[] | undefined) => {
-    return useQueries({
-        queries: (ids ?? []).map((id) => {
-            return {
-                queryKey: ["task", { id }],
-                queryFn: () => getTasks(id!),
-            };
-        }),
+// export const useUserByTasks = (ids: string[] | undefined) => {
+//     return useQueries({
+//         queries: (ids ?? []).map((id) => {
+//             return {
+//                 queryKey: ["task", { id }],
+//                 queryFn: () => getUserByTasks(id!),
+//             };
+//         }),
+//     });
+// };
+
+export const useUserByTasks = () => {
+    return useQuery({
+        queryKey: ["userBytasks"],
+        queryFn: getUserByTasks,
     });
 };

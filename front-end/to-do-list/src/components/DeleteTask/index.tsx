@@ -27,7 +27,7 @@ export const DeleteTask = ({ data }: { data: PropTasks }) => {
                 <button
                     className="bg-green-500 p-2 rounded"
                     onClick={() => {
-                        mutate(data._id);
+                        mutate(data.id);
                         dispatch({ type: actionsType.CLOSE_DELETE_TASK });
                     }}
                 >

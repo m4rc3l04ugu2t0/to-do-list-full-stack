@@ -6,7 +6,7 @@ export const BtnSideBar = ({
     return (
         <button
             onClick={() => setToggleSideBar((prevState) => !prevState)}
-            className="bi bi-layout-sidebar text-3xl self-end"
+            className="bi bi-layout-sidebar text-3xl "
             // Adicione ícones ou texto conforme necessário
         ></button>
     );

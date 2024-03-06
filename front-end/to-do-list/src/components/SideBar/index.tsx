@@ -1,5 +1,7 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useContext, useState } from "react";
 import { BtnSideBar } from "./btnSideBar";
+import { ContextClicks } from "../../contexts/contextClicks";
+import { actionsType } from "../../contexts/reducer/actionsType";
 
 export const SideBar = () => {
     const [toggleSideBar, setToggleSideBar] = useState(false); // Estado para controlar a visibilidade
@@ -9,6 +11,8 @@ export const SideBar = () => {
         left: "0",
         margin: "0.4rem",
     };
+
+    const { dispatch } = useContext(ContextClicks);
 
     return (
         <div
@@ -24,10 +28,39 @@ export const SideBar = () => {
         >
             <div
                 style={toggleSideBar ? {} : styleBtnSideBar}
-                className="flex flex-col border-b-2 border-zinc-600"
+                className="flex border-b-2 justify-between border-zinc-600 gap-3 items-center"
             >
+                <div className="flex gap-3 items-center overflow-hidden">
+                    {"  "}
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                        alt="image profile"
+                        className="w-8 h-8 rounded-full"
+                    />
+                    {
+                        <button
+                            onClick={() => {
+                                dispatch({
+                                    type: actionsType.CLOSE_CREATE_USER,
+                                });
+                            }}
+                            style={
+                                window.innerWidth < 768
+                                    ? { display: "none" }
+                                    : { display: "block" }
+                            }
+                            className="whitespace-no-wrap"
+                        >
+                            {"  "}
+                            {(window.innerWidth > 768 &&
+                                localStorage.getItem("userName")) ??
+                                "Create User"}
+                        </button>
+                    }
+                </div>
                 <BtnSideBar setToggleSideBar={setToggleSideBar} />
             </div>
+
             <ul
                 style={
                     toggleSideBar ? { display: "flex" } : { display: "none" }

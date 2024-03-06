@@ -6,7 +6,10 @@ export type PropAction = {
         | "CLOSE_EDIT_TASK"
         | "CLOSE_DELETE_TASK"
         | "CLOSE_CREATE_TASK"
-        | "UPDATE_TASK";
+        | "UPDATE_TASK"
+        | "CLOSE_CREATE_USER"
+        | "CLOSE_DELETE_USER";
+    payload?: string;
 };
 export const reducer = (
     state: PropInitialState,
@@ -27,6 +30,16 @@ export const reducer = (
             return {
                 ...state,
                 closeDeleteTask: !state.closeDeleteTask,
+            };
+        case actionsType.CLOSE_CREATE_USER:
+            return {
+                ...state,
+                closeCreateUser: !state.closeCreateUser,
+            };
+        case actionsType.CLOSE_DELETE_USER:
+            return {
+                ...state,
+                closeDeleteUser: !state.closeDeleteUser,
             };
         default:
             return state;

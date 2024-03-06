@@ -10,7 +10,6 @@ export const CreateTask = () => {
     const { state } = useContextClick();
 
     const handleCreateTask: SubmitHandler<PropTasks> = (data) => {
-        console.log("create");
         createTaskMuataion.mutate(data);
     };
 

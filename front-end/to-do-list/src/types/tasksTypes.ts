@@ -1,5 +1,5 @@
 export interface PropTasks {
-    _id: string;
+    id: string;
     title: string;
     description: string;
     created?: Date;
