@@ -9,7 +9,9 @@ export type PropAction = {
         | "UPDATE_TASK"
         | "CLOSE_CREATE_USER"
         | "CLOSE_DELETE_USER"
-        | "CHECK_TASK";
+        | "CHECK_TASK"
+        | "CLOSE_LOGIN_USER"
+        | "CLOSE_SIDEBAR";
     payload?: string;
 };
 export const reducer = (
@@ -47,6 +49,16 @@ export const reducer = (
                 ...state,
                 checkTask: !state.checkTask,
                 payload: action.payload,
+            };
+        case actionsType.CLOSE_LOGIN_USER:
+            return {
+                ...state,
+                closeLoginUser: !state.closeLoginUser,
+            };
+        case actionsType.CLOSE_SIDEBAR:
+            return {
+                ...state,
+                closeSidebar: !state.closeSidebar,
             };
         default:
             return state;

@@ -1,10 +1,10 @@
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useContext } from "react";
 import { BtnSideBar } from "./btnSideBar";
 import { ContextClicks } from "../../contexts/contextClicks";
 import { actionsType } from "../../contexts/reducer/actionsType";
 
 export const SideBar = () => {
-    const [toggleSideBar, setToggleSideBar] = useState(false); // Estado para controlar a visibilidade
+    const { state, dispatch } = useContext(ContextClicks);
     const styleBtnSideBar: CSSProperties = {
         position: "absolute",
         top: "0",
@@ -12,22 +12,20 @@ export const SideBar = () => {
         margin: "0.4rem",
     };
 
-    const { dispatch } = useContext(ContextClicks);
-
     return (
         <div
-            data-isopen={toggleSideBar}
+            data-isopen={state.closeSidebar}
             style={{
                 transition: "width 0.5s ease-in-out",
-                width: toggleSideBar ? "33%" : "0",
-                padding: toggleSideBar ? "0.5rem" : "0", // Ajuste '20rem' para a largura desejada do menu aberto
+                width: state.closeSidebar ? "33%" : "0",
+                padding: state.closeSidebar ? "0.5rem" : "0", // Ajuste '20rem' para a largura desejada do menu aberto
                 overflow: "hidden",
             }}
             className={`w-2/6 max-w-80 h-dvh bg-zinc-900 flex flex-col gap-4 transition duration-300`}
             // Adicione ou ajuste classes aqui para personalizar o estilo
         >
             <div
-                style={toggleSideBar ? {} : styleBtnSideBar}
+                style={state.closeSidebar ? {} : styleBtnSideBar}
                 className="flex border-b-2 justify-between border-zinc-600 gap-3 items-center"
             >
                 <div className="flex gap-3 items-center overflow-hidden">
@@ -44,28 +42,20 @@ export const SideBar = () => {
                                     type: actionsType.CLOSE_CREATE_USER,
                                 });
                             }}
-                            style={
-                                window.innerWidth < 768
-                                    ? { display: "none" }
-                                    : { display: "block" }
-                            }
-                            className="whitespace-no-wrap"
+                            className={` whitespace-no-wrap hidden md:block`}
                         >
                             {"  "}
-                            {(window.innerWidth > 768 &&
-                                localStorage.getItem("userName")) ??
-                                "Create User"}
+                            {localStorage.getItem("userName") ?? "Create User"}
                         </button>
                     }
                 </div>
-                <BtnSideBar setToggleSideBar={setToggleSideBar} />
+                <BtnSideBar />
             </div>
 
             <ul
-                style={
-                    toggleSideBar ? { display: "flex" } : { display: "none" }
-                }
-                className="flex-col gap-6"
+                className={`${
+                    state.closeSidebar ? "flex" : "hidden"
+                } flex-col gap-6`}
             >
                 <li className="text-lg flex justify-center items-center gap-2 md:text-3xl border-b-2 border-zinc-600">
                     <i className="bi bi-search"></i> Search

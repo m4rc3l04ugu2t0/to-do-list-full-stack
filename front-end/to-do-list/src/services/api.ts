@@ -10,14 +10,15 @@ export const getIdUser = async () => {
     return await response.data.map((userId: User) => userId.id);
 };
 
-export const getUser = async () => {
-    const response = await axios(BASE_URL);
+export const getUser = async (userData: User) => {
+    const response = await axios.post(`${BASE_URL}/login`, userData);
     const data = await response.data;
+    localStorage.setItem("userId", data[0].id);
     return data;
 };
 
 export const getUserByTasks = async (id: string | undefined) => {
-    if (!id) return [];
+    if (!id) return [1];
     const response = await axios(`${BASE_URL}/${id}/tasks`);
     return await response.data;
 };
@@ -28,8 +29,8 @@ export const createUser = async (data: User) => {
     return await response.data;
 };
 
-export const createTask = async (data: PropTasks) => {
-    const response = await axios.post(`${BASE_URL}/${userId}/tasks`, data);
+export const createTask = async (data: PropTasks, id: string) => {
+    const response = await axios.post(`${BASE_URL}/${id}/tasks`, data);
     return await response.data;
 };
 

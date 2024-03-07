@@ -19,7 +19,7 @@ export const EditTask = ({ data }: { data: PropTasks }) => {
 
     return (
         <div
-            className={`w-4/6 h-auto bg-gray-800 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
+            className={`w-4/6 h-auto bg-zinc-900 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
                 state.closeModelEditTask ? "block" : "hidden"
             }`}
         >

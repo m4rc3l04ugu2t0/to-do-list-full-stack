@@ -5,6 +5,8 @@ export type PropsActionType = {
     CLOSE_CREATE_USER: "CLOSE_CREATE_USER";
     CLOSE_DELETE_USER: "CLOSE_DELETE_USER";
     CHECK_TASK: "CHECK_TASK";
+    CLOSE_LOGIN_USER: "CLOSE_LOGIN_USER";
+    CLOSE_SIDEBAR: "CLOSE_SIDEBAR";
 };
 
 export const actionsType: PropsActionType = {
@@ -14,4 +16,6 @@ export const actionsType: PropsActionType = {
     CLOSE_CREATE_USER: "CLOSE_CREATE_USER",
     CLOSE_DELETE_USER: "CLOSE_DELETE_USER",
     CHECK_TASK: "CHECK_TASK",
+    CLOSE_LOGIN_USER: "CLOSE_LOGIN_USER",
+    CLOSE_SIDEBAR: "CLOSE_SIDEBAR",
 };

@@ -4,15 +4,32 @@ import {
     createUser,
     deleteTask,
     deleteUser,
+    getUser,
     updateTask,
 } from "./api";
 import { queryClient } from "./QueryClient";
 import { PropTasks } from "../types/tasksTypes";
 import { User } from "../types/userTypes";
 
+export const useLoginUser = () => {
+    return useMutation({
+        mutationFn: (data: User) => getUser(data),
+        onSettled: async (data, error) => {
+            if (error) {
+                console.log(error);
+            }
+            localStorage.setItem("userName", data[0].name);
+            await queryClient.invalidateQueries({
+                queryKey: ["userBytasks"],
+            });
+        },
+    });
+};
+
 export const useCreateTask = () => {
     return useMutation({
-        mutationFn: (data: PropTasks) => createTask(data),
+        mutationFn: (data: PropTasks) =>
+            createTask(data, localStorage.getItem("userId")!),
         onSettled: async (_, error) => {
             if (error) {
                 console.log(error);

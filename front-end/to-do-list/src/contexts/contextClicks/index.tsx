@@ -8,6 +8,8 @@ export interface PropInitialState {
     closeCreateUser?: boolean;
     closeDeleteUser?: boolean;
     checkTask?: boolean;
+    closeLoginUser?: boolean;
+    closeSidebar?: boolean;
     payload?: string;
 }
 
@@ -18,6 +20,8 @@ const initialState: PropInitialState = {
     closeCreateUser: false,
     closeDeleteUser: false,
     checkTask: false,
+    closeLoginUser: false,
+    closeSidebar: false,
 };
 
 interface ContextType {

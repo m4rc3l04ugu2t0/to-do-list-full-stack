@@ -19,9 +19,9 @@ export const useIdUser = () => {
 //     });
 // };
 
-export const useUserByTasks = (id: string | undefined) => {
+export const useUserByTasks = () => {
     return useQuery({
         queryKey: ["userBytasks"],
-        queryFn: () => getUserByTasks(id),
+        queryFn: () => getUserByTasks(localStorage.getItem("userId")!),
     });
 };
