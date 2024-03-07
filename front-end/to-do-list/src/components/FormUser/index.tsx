@@ -18,6 +18,16 @@ export const FormUser = () => {
         reset();
     };
 
+    // interface QueryResult {
+    //     fieldCount: number;
+    //     affectedRows: number;
+    //     insertId?: number | undefined;
+    //     info: string;
+    //     serverStatus: number;
+    //     warningStatus: number;
+    //     changedRows: number;
+    // }
+
     return (
         <>
             <div

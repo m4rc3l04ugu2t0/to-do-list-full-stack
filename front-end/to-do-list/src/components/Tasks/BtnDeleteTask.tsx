@@ -5,7 +5,7 @@ export const BtnDeleteTask = ({ onclick }: { onclick: () => void }) => {
     const { dispatch } = useContextClick();
     return (
         <button
-            className="bi bi-trash text-2xl text-red-500 w-10 h-10 rounded hover:bg-red-500 hover:text-white transition duration-300"
+            className="bi bi-trash text-2xl text-red-500 w-10 h-10 hover:bg-red-500 hover:text-white transition-all hover:rounded  duration-300 "
             onClick={() => {
                 dispatch({ type: actionsType.CLOSE_DELETE_TASK });
                 onclick();

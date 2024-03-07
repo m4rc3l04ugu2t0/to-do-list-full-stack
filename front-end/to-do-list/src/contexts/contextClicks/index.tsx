@@ -7,6 +7,7 @@ export interface PropInitialState {
     closeDeleteTask?: boolean;
     closeCreateUser?: boolean;
     closeDeleteUser?: boolean;
+    checkTask?: boolean;
     payload?: string;
 }
 
@@ -16,6 +17,7 @@ const initialState: PropInitialState = {
     closeDeleteTask: false,
     closeCreateUser: false,
     closeDeleteUser: false,
+    checkTask: false,
 };
 
 interface ContextType {

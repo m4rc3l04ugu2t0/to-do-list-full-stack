@@ -26,17 +26,17 @@ export const FormTask = ({
             method="post"
             action="post"
             onSubmit={handleSubmit(handleFormSubmit)}
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-3 shadow-2xl shadow-black"
         >
             <input
                 type="text"
                 placeholder="Task Name"
-                className="w-full p-2 bg-gray-700 rounded outline-none"
+                className="w-full p-2 bg-zinc-800 rounded outline-none"
                 {...register("title")}
             />
             <textarea
                 placeholder="Task Description"
-                className="w-full p-2 bg-gray-700 rounded outline-none"
+                className="w-full p-2 bg-zinc-800 rounded outline-none"
                 {...register("description")}
             />
 
@@ -50,7 +50,7 @@ export const FormTask = ({
                 </button>
                 <input
                     type="submit"
-                    className="bg-green-500 p-2 rounded"
+                    className="bg-green-500 p-2 rounded cursor-pointer"
                     disabled={mutation.isPending}
                     value={mutation.isPending ? "Saving..." : "Save"}
                 />

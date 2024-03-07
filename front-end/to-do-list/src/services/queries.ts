@@ -19,9 +19,9 @@ export const useIdUser = () => {
 //     });
 // };
 
-export const useUserByTasks = () => {
+export const useUserByTasks = (id: string | undefined) => {
     return useQuery({
         queryKey: ["userBytasks"],
-        queryFn: getUserByTasks,
+        queryFn: () => getUserByTasks(id),
     });
 };

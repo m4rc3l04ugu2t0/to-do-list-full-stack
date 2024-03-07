@@ -16,8 +16,9 @@ export const getUser = async () => {
     return data;
 };
 
-export const getUserByTasks = async () => {
-    const response = await axios(`${BASE_URL}/${userId}/tasks`);
+export const getUserByTasks = async (id: string | undefined) => {
+    if (!id) return [];
+    const response = await axios(`${BASE_URL}/${id}/tasks`);
     return await response.data;
 };
 

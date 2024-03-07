@@ -33,6 +33,9 @@ export const useCreateUser = () => {
 
             await queryClient.invalidateQueries({ queryKey: ["userBytasks"] });
         },
+        onSuccess(data) {
+            console.log(data);
+        },
     });
 };
 

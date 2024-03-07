@@ -6,7 +6,7 @@ export const BtnEditTask = ({ onclick }: { onclick: () => void }) => {
 
     return (
         <button
-            className="bi bi-pencil text-2xl text-blue-500 w-10 h-10 rounded hover:bg-blue-500 hover:text-white transition duration-300"
+            className="bi bi-pencil-square text-2xl text-blue-500 w-10 h-10 rounded hover:bg-blue-500 hover:text-white transition duration-300"
             onClick={() => {
                 dispatch({ type: actionsType.CLOSE_EDIT_TASK });
 
