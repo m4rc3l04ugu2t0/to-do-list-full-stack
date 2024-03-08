@@ -10,6 +10,7 @@ export const CreateTask = () => {
     const { state } = useContextClick();
 
     const handleCreateTask: SubmitHandler<PropTasks> = (data) => {
+        if (!localStorage.getItem("userId")!) return console.log("error");
         createTaskMuataion.mutate(data);
     };
 
