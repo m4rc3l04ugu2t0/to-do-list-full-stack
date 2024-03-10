@@ -8,10 +8,10 @@ import { ClicksProvider } from "./contexts/contextClicks/index.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <ClicksProvider>
-            <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+            <ClicksProvider>
                 <App />
-            </QueryClientProvider>
-        </ClicksProvider>
+            </ClicksProvider>
+        </QueryClientProvider>
     </React.StrictMode>
 );

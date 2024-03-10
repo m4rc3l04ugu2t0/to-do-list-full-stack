@@ -4,6 +4,7 @@ import { FormTask } from "../FormTasks";
 import { PropTasks } from "../../types/tasksTypes";
 import { actionsType } from "../../contexts/reducer/actionsType";
 import { useContextClick } from "../../contexts/contextClicks/useContextClicks";
+import { GenericComponents } from "../GenericComponents";
 
 export const EditTask = ({ data }: { data: PropTasks }) => {
     const updateTaskMutation = useUpdateTask();
@@ -18,7 +19,7 @@ export const EditTask = ({ data }: { data: PropTasks }) => {
     };
 
     return (
-        <div
+        <GenericComponents.Div
             className={`w-4/6 h-auto bg-zinc-900 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
                 state.closeModelEditTask ? "block" : "hidden"
             }`}
@@ -28,6 +29,6 @@ export const EditTask = ({ data }: { data: PropTasks }) => {
                 mutation={updateTaskMutation}
                 actionType={actionsType.CLOSE_EDIT_TASK}
             />
-        </div>
+        </GenericComponents.Div>
     );
 };

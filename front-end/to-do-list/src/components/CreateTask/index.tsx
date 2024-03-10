@@ -4,6 +4,7 @@ import { useCreateTask } from "../../services/mutations";
 import { FormTask } from "../FormTasks";
 import { useContextClick } from "../../contexts/contextClicks/useContextClicks";
 import { actionsType } from "../../contexts/reducer/actionsType";
+import { GenericComponents } from "../GenericComponents";
 
 export const CreateTask = () => {
     const createTaskMuataion = useCreateTask();
@@ -15,7 +16,7 @@ export const CreateTask = () => {
     };
 
     return (
-        <div
+        <GenericComponents.Div
             className={`w-4/6 h-auto bg-zinc-900 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
                 state.closeModelCreateTask ? "block" : "hidden"
             }`}
@@ -25,6 +26,6 @@ export const CreateTask = () => {
                 mutation={createTaskMuataion}
                 actionType={actionsType.CLOSE_CREATE_TASK}
             />
-        </div>
+        </GenericComponents.Div>
     );
 };
