@@ -1,48 +1,90 @@
 import { useContext } from "react";
 import { ContextClicks } from "../../contexts/contextClicks";
-import { useForm } from "react-hook-form";
-import { User } from "../../types/userTypes";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useCreateUser } from "../../services/mutations";
 import { actionsType } from "../../contexts/reducer/actionsType";
+import { CreateUserProp, createUserSchema } from "../../createUserSchema";
+import { FormUsersComponents } from "../FormUsersComponents";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const FormPostUser = () => {
     const { dispatch } = useContext(ContextClicks);
-    const { register, handleSubmit, reset } = useForm<User>();
+    const createUserForm = useForm<CreateUserProp>({
+        resolver: zodResolver(createUserSchema),
+    });
     const mutationCreateUser = useCreateUser();
 
-    const handleFormSubmit = async (data: User) => {
+    const { handleSubmit, reset, control } = createUserForm;
+
+    const handleFormSubmit = async (data: CreateUserProp) => {
         dispatch({ type: actionsType.CLOSE_CREATE_USER });
         localStorage.setItem("userName", data.name);
         mutationCreateUser.mutate(data);
         reset();
     };
     return (
-        <>
+        <FormProvider {...createUserForm}>
             <form
                 method="post"
                 action="post"
                 onSubmit={handleSubmit(handleFormSubmit)}
                 className="flex justify-center flex-col gap-8 items-center w-full h-3/4"
             >
-                <input
-                    type="text"
-                    placeholder="User Name"
-                    {...register("name")}
-                    className="w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none"
+                <Controller
+                    name="name"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field, fieldState }) => (
+                        <>
+                            <FormUsersComponents.Input
+                                {...field}
+                                type="text"
+                                placeholder="Enter your name"
+                                className="w-11/12 md:w-3/4 h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none"
+                            />
+                            {fieldState.error && (
+                                <span>{fieldState.error.message}</span>
+                            )}
+                        </>
+                    )}
                 />
 
-                <input
-                    type="email"
-                    placeholder="Enter a fictitious email"
-                    {...register("email")}
-                    className="w-11/12 md:w-3/4 h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none"
+                <Controller
+                    name="email"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field, fieldState }) => (
+                        <>
+                            <FormUsersComponents.Input
+                                type="text"
+                                placeholder="Email fictitious"
+                                {...field}
+                                className={`w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none `}
+                            />
+                            {fieldState.error && (
+                                <span>{fieldState.error.message}</span>
+                            )}
+                        </>
+                    )}
                 />
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    {...register("password")}
-                    className="w-11/12 md:w-3/4 h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none"
+                <Controller
+                    name="password"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field, fieldState }) => (
+                        <>
+                            <FormUsersComponents.Input
+                                type="password"
+                                placeholder="Password"
+                                {...field}
+                                className={`w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none `}
+                            />
+                            {fieldState.error && (
+                                <span>{fieldState.error.message}</span>
+                            )}
+                        </>
+                    )}
                 />
 
                 <input
@@ -51,6 +93,6 @@ export const FormPostUser = () => {
                     value="Save"
                 />
             </form>
-        </>
+        </FormProvider>
     );
 };

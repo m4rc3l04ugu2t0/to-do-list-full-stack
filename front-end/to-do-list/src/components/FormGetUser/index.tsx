@@ -1,26 +1,11 @@
 import { ContextClicks } from "../../contexts/contextClicks";
 import { useForm, FormProvider, Controller } from "react-hook-form";
-import { z } from "zod";
 import { useLoginUser } from "../../services/mutations";
 import { actionsType } from "../../contexts/reducer/actionsType";
 import { useContext } from "react";
 import { FormUsersComponents } from "../FormUsersComponents";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const createUserSchema = z.object({
-    email: z
-        .string()
-        .min(1, "Email is required")
-        .email({
-            message: "Formato de e-mail inválido",
-        })
-        .toLowerCase(),
-    password: z.string().min(6, {
-        message: "A senha precisa ter no mínimo 6 caracteres",
-    }),
-});
-
-type CreateUserProp = z.infer<typeof createUserSchema>;
+import { CreateUserProp, createUserSchema } from "../../createUserSchema";
 
 export const FormGetUser = () => {
     const { state, dispatch } = useContext(ContextClicks);
@@ -29,7 +14,7 @@ export const FormGetUser = () => {
     });
     const mutationLoginUser = useLoginUser();
 
-    const { register, handleSubmit, reset, control } = createUserForm;
+    const { handleSubmit, reset, control } = createUserForm;
 
     const handleFormSubmit = async (data: CreateUserProp) => {
         mutationLoginUser.mutate(data);
@@ -52,31 +37,39 @@ export const FormGetUser = () => {
                 <Controller
                     name="email"
                     control={control}
-                    render={({ field }) => (
-                        <FormUsersComponents.Input
-                            type="text"
-                            placeholder="Email fictitious"
-                            {...field}
-                            className={`w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none `}
-                        />
+                    rules={{ required: true }}
+                    render={({ field, fieldState }) => (
+                        <>
+                            <FormUsersComponents.Input
+                                type="text"
+                                placeholder="Email fictitious"
+                                {...field}
+                                className={`w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none `}
+                            />
+                            {fieldState.error && (
+                                <span>{fieldState.error.message}</span>
+                            )}
+                        </>
                     )}
                 />
 
-                <FormUsersComponents.ErrorMessage
-                    name="email"
-                    className="w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none "
-                />
-
-                <FormUsersComponents.Input
-                    type="password"
-                    placeholder="Password"
-                    {...register("password")}
-                    className={`w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none `}
-                />
-
-                <FormUsersComponents.ErrorMessage
+                <Controller
                     name="password"
-                    className="w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none "
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field, fieldState }) => (
+                        <>
+                            <FormUsersComponents.Input
+                                type="password"
+                                placeholder="Password"
+                                {...field}
+                                className={`w-11/12 md:w-3/4  h-10 md:h-14 py-2 px-6 bg-gray-700 rounded outline-none `}
+                            />
+                            {fieldState.error && (
+                                <span>{fieldState.error.message}</span>
+                            )}
+                        </>
+                    )}
                 />
 
                 <input
