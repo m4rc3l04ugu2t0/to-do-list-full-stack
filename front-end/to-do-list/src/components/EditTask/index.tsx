@@ -7,28 +7,27 @@ import { useContextClick } from "../../contexts/contextClicks/useContextClicks";
 import { GenericComponents } from "../GenericComponents";
 
 export const EditTask = ({ data }: { data: PropTasks }) => {
-    const updateTaskMutation = useUpdateTask();
-    const { state } = useContextClick();
+  const updateTaskMutation = useUpdateTask();
+  const { state } = useContextClick();
 
-    const handleUpdateTask: SubmitHandler<PropTasks> = (updateData) => {
-        console.log(updateData);
-        updateTaskMutation.mutate({
-            ...data,
-            ...updateData, // Assuming you want to merge with the incoming data
-        });
-    };
+  const handleUpdateTask: SubmitHandler<PropTasks> = (updateData) => {
+    updateTaskMutation.mutate({
+      ...data,
+      ...updateData, // Assuming you want to merge with the incoming data
+    });
+  };
 
-    return (
-        <GenericComponents.Div
-            className={`w-4/6 h-auto bg-zinc-900 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
-                state.closeModelEditTask ? "block" : "hidden"
-            }`}
-        >
-            <FormTask
-                method={handleUpdateTask}
-                mutation={updateTaskMutation}
-                actionType={actionsType.CLOSE_EDIT_TASK}
-            />
-        </GenericComponents.Div>
-    );
+  return (
+    <GenericComponents.Div
+      className={`w-4/6 h-auto bg-zinc-900 absolute right-8 top-6  md:max-w-3xl rounded p-3 ${
+        state.closeModelEditTask ? "block" : "hidden"
+      }`}
+    >
+      <FormTask
+        method={handleUpdateTask}
+        mutation={updateTaskMutation}
+        actionType={actionsType.CLOSE_EDIT_TASK}
+      />
+    </GenericComponents.Div>
+  );
 };
