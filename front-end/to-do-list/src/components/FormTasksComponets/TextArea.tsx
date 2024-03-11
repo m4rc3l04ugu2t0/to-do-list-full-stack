@@ -1,11 +1,18 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, Ref, forwardRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
-    name: string;
+  ref: Ref<HTMLTextAreaElement>;
+  name: string;
 }
 
-export const TextArea = (props: TextareaProps) => {
+const TextArea = forwardRef(
+  (props: TextareaProps, ref: Ref<HTMLTextAreaElement>) => {
     const { register } = useFormContext();
-    return <textarea {...register(props.name)} {...props} />;
-};
+    return <textarea {...register(props.name)} {...props} ref={ref} />;
+  },
+);
+
+TextArea.displayName = "TextArea";
+
+export default TextArea;

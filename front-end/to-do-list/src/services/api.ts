@@ -40,9 +40,10 @@ export const deleteUser = async (id: string) => {
 };
 
 export const updateTask = async (data: {
-  id: string;
+  id?: string;
   title: string;
   description: string;
+  done?: boolean;
 }) => {
   await axios.put(`${BASE_URL}/${userId}/task/${data.id}`, data);
 };

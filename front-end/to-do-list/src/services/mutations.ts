@@ -59,8 +59,8 @@ export const useCreateUser = () => {
 export const useUpdateTask = () => {
   return useMutation({
     mutationFn: (data: PropTasks) => {
-      const { id, title, description } = data;
-      return updateTask({ id, title, description });
+      const { id, title, description, done } = data;
+      return updateTask({ id, title, description, done });
     },
     onSettled: async (_, error) => {
       if (error) {
