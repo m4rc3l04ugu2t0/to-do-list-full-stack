@@ -1,4 +1,5 @@
-import { User } from '../types/user'
+import bcrypt from 'bcrypt'
+import { connect } from '../database'
 
 export class AuthUser {
   name: string
@@ -11,38 +12,61 @@ export class AuthUser {
     this.password = password
   }
 
-  messageError(typeError: string[]) {
-    let messages: Record<string, string> = {
-      name: 'Name is required',
-      email: 'Email is required',
-      password: 'Password is required'
-    }
+  hashPassword(password: string) {
+    const salt = bcrypt.genSaltSync(10)
+    const hash = bcrypt.hashSync(password, salt)
+    return hash
+  }
 
-    return (messages = {
-      name: messages[typeError[0]],
-      email: messages[typeError[1]],
-      password: messages[typeError[2]]
-    })
+  comparePassword(password: string, hash: string) {
+    return bcrypt.compareSync(password, hash)
+  }
+
+  async createUser(name: string, email: string, password: string) {
+    const hash = this.hashPassword(password)
+    const dataUserValid = { name, email, password: hash }
+    const conn = await connect()
+    const [createdUser] = await conn.query(
+      'INSERT INTO users SET ?',
+      dataUserValid
+    )
+
+    return createdUser
+  }
+
+  checkEmail(email: string) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(String(email).toLowerCase())
+  }
+
+  checkName(name: string) {
+    const re = /^[a-zA-Z\s]+$/
+    return re.test(name)
+  }
+
+  checkPassword(password: string) {
+    const re =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    return re.test(password)
   }
 
   checkDataUser(name: string, email: string, password: string) {
     if (!name || !email || !password) {
       return false
     }
-    return true
-  }
 
-  setAuthUser(user: User) {
-    this.name = user.name
-    this.email = user.email
-    this.password = user.password
-  }
-
-  getAuthUser() {
-    return {
-      name: this.name,
-      email: this.email,
-      password: this.password
+    if (
+      this.checkPassword(password) &&
+      this.checkName(name) &&
+      this.checkEmail(email)
+    ) {
+      return false
     }
+
+    this.name = name
+    this.email = email
+    this.password = password
+    return true
   }
 }

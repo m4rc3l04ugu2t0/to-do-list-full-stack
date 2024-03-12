@@ -13,7 +13,7 @@ export const middleValidateUser = (
   if (!authUser.checkDataUser(name, email, password)) {
     return reply
       .status(400)
-      .send({ message: 'Name, email and password are required' })
+      .send({ message: 'Data is not valid' })
   }
 
   done()

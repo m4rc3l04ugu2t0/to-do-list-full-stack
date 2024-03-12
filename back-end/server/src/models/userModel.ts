@@ -1,3 +1,4 @@
+import { AuthUser } from '../Auth/authUser'
 import { connect } from '../database'
 import { User } from '../types/user'
 
@@ -11,9 +12,8 @@ export const usersBD = async (email: string, password: string) => {
 }
 
 export const createUserBD = async (user: User) => {
-  const conn = await connect()
-  const [createdUser] = await conn.query('INSERT INTO users SET ?', user)
-  return createdUser
+  const authUser = new AuthUser()
+  return authUser.createUser(user.name, user.email, user.password)
 }
 
 export const getUsersBD = async () => {
