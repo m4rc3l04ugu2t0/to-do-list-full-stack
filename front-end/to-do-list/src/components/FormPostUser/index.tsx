@@ -14,17 +14,29 @@ export const FormPostUser = () => {
   const { dispatch } = useContext(ContextClicks);
   const createUserForm = useForm<CreateUserProp>({
     resolver: zodResolver(createUserSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
   });
   const mutationCreateUser = useCreateUser();
 
   const { handleSubmit, reset, control } = createUserForm;
 
   const handleFormSubmit = async (data: CreateUserProp) => {
+    mutationCreateUser.mutate(data);
+    if (!mutationCreateUser.isError) {
+      return;
+    }
+    if (localStorage.getItem("userName")) {
+      return;
+    }
     dispatch({ type: actionsType.CLOSE_CREATE_USER });
     localStorage.setItem("userName", data.name);
-    mutationCreateUser.mutate(data);
     reset();
   };
+
   return (
     <FormProvider {...createUserForm}>
       <form
@@ -33,6 +45,13 @@ export const FormPostUser = () => {
         onSubmit={handleSubmit(handleFormSubmit)}
         className="flex justify-center flex-col gap-8 items-center w-full h-3/4"
       >
+        {localStorage.getItem("userName") && (
+          <span className="text-red-500">You are already logged in</span>
+        )}
+
+        {mutationCreateUser.isError && (
+          <span className="text-red-500">User already exists</span>
+        )}
         <Controller
           name="name"
           control={control}

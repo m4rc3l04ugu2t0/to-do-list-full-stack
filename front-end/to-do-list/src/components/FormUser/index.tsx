@@ -4,9 +4,12 @@ import { DeleteUser } from "../DeleteUser";
 import { actionsType } from "../../contexts/reducer/actionsType";
 import { FormPostUser } from "../FormPostUser";
 import { FormGetUser } from "../FormGetUser";
+import { Logout } from "../Logout";
+import { useUserByTasks } from "../../services/queries";
 
 export const FormUser = () => {
   const { state, dispatch } = useContext(ContextClicks);
+  const taskQuery = useUserByTasks();
 
   return (
     <>
@@ -16,6 +19,17 @@ export const FormUser = () => {
         } justify-center p-4 flex-col items-center w-80 md:w-6/12 h-3/6 md:h-2/3 bg-black rounded  z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl shadow-black`}
       >
         <div className="absolute top-2 right-0 flex items-center gap-2">
+          <button
+            onClick={() => {
+              dispatch({ type: actionsType.CLOSE_LOGOUT });
+              dispatch({ type: actionsType.CLOSE_CREATE_USER });
+              localStorage.clear();
+              taskQuery.refetch();
+            }}
+            className="w-20 flex items-center justify-center  text-xl hover:text-red-500"
+          >
+            <p className="bi bi-box-arrow-left"></p>
+          </button>
           <button
             onClick={() => dispatch({ type: actionsType.CLOSE_LOGIN_USER })}
             className={`${
@@ -50,8 +64,8 @@ export const FormUser = () => {
         </h2>
         {state.closeLoginUser ? <FormPostUser /> : <FormGetUser />}
       </div>
-
-      <DeleteUser />
+      {state.closeLogout && <Logout />}
+      {state.closeDeleteUser && <DeleteUser />}
     </>
   );
 };

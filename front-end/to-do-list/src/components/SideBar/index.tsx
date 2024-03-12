@@ -21,7 +21,7 @@ export const SideBar = () => {
         padding: state.closeSidebar ? "0.5rem" : "0", // Ajuste '20rem' para a largura desejada do menu aberto
         overflow: "hidden",
       }}
-      className={`w-2/6 max-w-80 h-dvh bg-zinc-900 flex flex-col gap-4 transition duration-300 shadow-2xl shadow-black`}
+      className={`w-2/6 max-w-80 h-dvh bg-zinc-950 flex flex-col gap-4 transition duration-300 shadow-2xl shadow-black`}
       // Adicione ou ajuste classes aqui para personalizar o estilo
     >
       <div

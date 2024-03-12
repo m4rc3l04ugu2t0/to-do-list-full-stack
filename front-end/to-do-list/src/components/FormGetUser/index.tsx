@@ -6,21 +6,31 @@ import { useContext } from "react";
 import { FormUsersComponents } from "../FormUsersComponents";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  CreateUserProp,
-  createUserSchema,
+  CreateUserPropLogin,
+  createUserSchemaLogin,
 } from "../../schemas/createUserSchema";
 
 export const FormGetUser = () => {
   const { state, dispatch } = useContext(ContextClicks);
-  const createUserForm = useForm<CreateUserProp>({
-    resolver: zodResolver(createUserSchema),
+  const createUserForm = useForm<CreateUserPropLogin>({
+    resolver: zodResolver(createUserSchemaLogin),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
   const mutationLoginUser = useLoginUser();
 
   const { handleSubmit, reset, control } = createUserForm;
 
-  const handleFormSubmit = async (data: CreateUserProp) => {
+  const handleFormSubmit = async (data: CreateUserPropLogin) => {
     mutationLoginUser.mutate(data);
+    if (!mutationLoginUser.isError) {
+      return;
+    }
+    if (localStorage.getItem("userName")) {
+      return;
+    }
     if (state.closeLoginUser) {
       dispatch({
         type: actionsType.CLOSE_LOGIN_USER,
@@ -37,6 +47,12 @@ export const FormGetUser = () => {
         onSubmit={handleSubmit(handleFormSubmit)}
         className="flex justify-center flex-col gap-6 items-center w-full h-3/4"
       >
+        {localStorage.getItem("userName") && (
+          <span className="text-red-500">You are already logged in</span>
+        )}
+        {mutationLoginUser.isError && (
+          <span className="text-red-500">Invalid credentials</span>
+        )}
         <Controller
           name="email"
           control={control}

@@ -23,4 +23,19 @@ export const createUserSchema = z.object({
   }),
 });
 
+export const createUserSchemaLogin = z.object({
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email({
+      message: "Formato de e-mail inválido",
+    })
+    .toLowerCase(),
+  password: z.string().min(6, {
+    message: "A senha precisa ter no mínimo 6 caracteres",
+  }),
+});
+
+export type CreateUserPropLogin = z.infer<typeof createUserSchemaLogin>;
+
 export type CreateUserProp = z.infer<typeof createUserSchema>;

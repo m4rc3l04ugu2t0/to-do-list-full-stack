@@ -8,7 +8,6 @@ export const TaskOption = (data: { data: PropTasks }) => {
   const updateTaskMutation = useUpdateTask();
   const { dispatch } = useContext(ContextClicks);
   const handleUpdateTask = () => {
-    console.log(data.data);
     updateTaskMutation.mutate({
       ...data.data,
       done: !data.data.done,
