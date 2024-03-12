@@ -1,49 +1,50 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import Tasks from "../types/tasks";
+import { FastifyReply, FastifyRequest } from 'fastify'
+import Tasks from '../types/tasks'
 import {
-    deleteTaskBD,
-    updatedTaskBD,
-    getTasksByUserBD,
-    createTaskByUserBD,
-} from "../models/taskModel";
-import { User } from "../types/user";
+  deleteTaskBD,
+  updatedTaskBD,
+  getTasksByUserBD,
+  createTaskByUserBD
+} from '../models/taskModel'
 
 // contollers user
 
 export const createTaskByUser = async (
-    request: FastifyRequest,
-    reply: FastifyReply
+  request: FastifyRequest,
+  reply: FastifyReply
 ) => {
-    const { id } = request.params as { id: string };
-    const data: Tasks = request.body as Tasks;
-    const task = await createTaskByUserBD(data, id);
-    return reply.status(201).send(task);
-};
+  const { id } = request.params as { id: string }
+  const data: Tasks = request.body as Tasks
+  const task = await createTaskByUserBD(data, id)
+  return reply.status(201).send(task)
+}
 
 export const getTasksByUser = async (
-    request: FastifyRequest,
-    reply: FastifyReply
+  request: FastifyRequest,
+  reply: FastifyReply
 ) => {
-    const { id } = request.params as { id: string };
-    const tasks = await getTasksByUserBD(id);
-    return reply.status(200).send(tasks);
-};
+  const { id } = request.params as { id: string }
+  const tasks = await getTasksByUserBD(id)
+  return reply.status(200).send(tasks)
+}
 
 export const deleteTasks = async (
-    request: FastifyRequest,
-    reply: FastifyReply
+  request: FastifyRequest,
+  reply: FastifyReply
 ) => {
-    const { id } = request.params as { id: string };
-    const task = await deleteTaskBD(id);
-    return reply.status(204).send({ message: "Task deleted" });
-};
+  const { id } = request.params as { id: string }
+  await deleteTaskBD(id)
+  return reply.status(204).send({ message: 'Task deleted' })
+}
 
 export const updatedTask = async (
-    request: FastifyRequest,
-    reply: FastifyReply
+  request: FastifyRequest,
+  reply: FastifyReply
 ) => {
-    const { id } = request.params as { id: string };
-    const data: Tasks = request.body as Tasks;
-    const task = await updatedTaskBD(id, data);
-    return reply.status(204).send({ message: "Task updated" });
-};
+  const { id } = request.params as { id: string }
+
+  const data: Tasks = request.body as Tasks
+  console.log(data)
+  await updatedTaskBD(id, data)
+  return reply.status(204).send({ message: 'Task updated' })
+}

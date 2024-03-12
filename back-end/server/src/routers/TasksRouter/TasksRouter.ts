@@ -1,26 +1,22 @@
-import { FastifyCorsOptions } from "@fastify/cors";
-import { FastifyInstance } from "fastify";
+import { FastifyInstance } from 'fastify'
 import {
-    deleteTasks,
-    getTasksByUser,
-    createTaskByUser,
-    updatedTask,
-} from "../../controllers/tasks-controller";
-import middleValidateTask from "../../middlewares/middleValidateTask";
+  deleteTasks,
+  getTasksByUser,
+  createTaskByUser,
+  updatedTask
+} from '../../controllers/tasks-controller'
+import middleValidateTask from '../../middlewares/middleValidateTask'
 
-export const TasksRoutes = async (
-    fastify: FastifyInstance,
-    options: FastifyCorsOptions
-) => {
-    fastify.get("/user/:id/tasks", getTasksByUser);
+export const TasksRoutes = async (fastify: FastifyInstance) => {
+  fastify.get('/user/:id/tasks', getTasksByUser)
 
-    fastify.post("/user/:id/tasks", createTaskByUser);
+  fastify.post('/user/:id/tasks', createTaskByUser)
 
-    fastify.delete("/tasks/:id", deleteTasks);
+  fastify.delete('/user/:id/task/:id', deleteTasks)
 
-    fastify.put(
-        "/tasks/:id",
-        { preHandler: [middleValidateTask] },
-        updatedTask
-    );
-};
+  fastify.put(
+    '/user/:id/task/:id',
+    { preHandler: [middleValidateTask] },
+    updatedTask
+  )
+}
