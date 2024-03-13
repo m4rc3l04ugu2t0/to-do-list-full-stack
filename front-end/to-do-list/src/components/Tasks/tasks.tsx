@@ -1,20 +1,20 @@
-import { BtnEditTask } from "./BtnEditTask";
-import { BtnDeleteTask } from "./BtnDeleteTask";
-import { LoadingTasks } from "../LoadingTasks";
-import { NoTaskCreated } from "../NoTaskCreated";
-import { TaskOption } from "../TaskOption";
-import { NoUserCreated } from "../NoUserCreated";
-import { useUserByTasks } from "../../services/queries";
-import { DeleteTask } from "../DeleteTask";
-import { CreateTask } from "../CreateTask";
-import { EditTask } from "../EditTask";
-import { PropTasks } from "../../types/tasksTypes";
-import { useState } from "react";
+import { BtnEditTask } from './BtnEditTask'
+import { BtnDeleteTask } from './BtnDeleteTask'
+import { LoadingTasks } from '../LoadingTasks'
+import { NoTaskCreated } from '../NoTaskCreated'
+import { TaskOption } from '../TaskOption'
+import { NoUserCreated } from '../NoUserCreated'
+import { useUserByTasks } from '../../services/queries'
+import { DeleteTask } from '../DeleteTask'
+import { CreateTask } from '../CreateTask'
+import { EditTask } from '../EditTask'
+import { PropTasks } from '../../types/tasksTypes'
+import { useState } from 'react'
 
 export const GetTasks = () => {
-  const tasksQuery = useUserByTasks();
+  const tasksQuery = useUserByTasks()
 
-  const [data, setData] = useState({} as PropTasks);
+  const [data, setData] = useState({} as PropTasks)
 
   return (
     <>
@@ -27,14 +27,14 @@ export const GetTasks = () => {
           <NoTaskCreated />
         ) : (
           tasksQuery.data.map((data: PropTasks) => {
-            let updatedTask, createdTask;
+            let updatedTask, createdTask
 
             if (data.updated) {
-              updatedTask = new Date(data.updated);
+              updatedTask = new Date(data.updated)
             }
 
             if (data.created) {
-              createdTask = new Date(data.created);
+              createdTask = new Date(data.created)
             }
 
             return (
@@ -51,7 +51,7 @@ export const GetTasks = () => {
                       created: {createdTask?.toLocaleString()}
                     </p>
                     <p className="text-sm font-normal text-blue-500">
-                      updated:{"  "}
+                      updated:{'  '}
                       {updatedTask?.toLocaleString()}
                     </p>
                   </div>
@@ -74,7 +74,7 @@ export const GetTasks = () => {
                   </div>
                 </div>
               </div>
-            );
+            )
           })
         )}
       </div>
@@ -82,5 +82,5 @@ export const GetTasks = () => {
       <CreateTask />
       <EditTask data={data} />
     </>
-  );
-};
+  )
+}

@@ -1,44 +1,39 @@
-import { ContextClicks } from "../../contexts/contextClicks";
-import { useForm, FormProvider, Controller } from "react-hook-form";
-import { useLoginUser } from "../../services/mutations";
-import { actionsType } from "../../contexts/reducer/actionsType";
-import { useContext } from "react";
-import { FormUsersComponents } from "../FormUsersComponents";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ContextClicks } from '../../contexts/contextClicks'
+import { useForm, FormProvider, Controller } from 'react-hook-form'
+import { useLoginUser } from '../../services/mutations'
+import { actionsType } from '../../contexts/reducer/actionsType'
+import { useContext } from 'react'
+import { FormUsersComponents } from '../FormUsersComponents'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   CreateUserPropLogin,
-  createUserSchemaLogin,
-} from "../../schemas/createUserSchema";
+  createUserSchemaLogin
+} from '../../schemas/createUserSchema'
 
 export const FormGetUser = () => {
-  const { state, dispatch } = useContext(ContextClicks);
+  const { state, dispatch } = useContext(ContextClicks)
   const createUserForm = useForm<CreateUserPropLogin>({
     resolver: zodResolver(createUserSchemaLogin),
     defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-  const mutationLoginUser = useLoginUser();
+      email: '',
+      password: ''
+    }
+  })
+  const mutationLoginUser = useLoginUser()
 
-  const { handleSubmit, reset, control } = createUserForm;
+  const { handleSubmit, reset, control } = createUserForm
 
   const handleFormSubmit = async (data: CreateUserPropLogin) => {
-    mutationLoginUser.mutate(data);
-    if (!mutationLoginUser.isError) {
-      return;
-    }
-    if (localStorage.getItem("userName")) {
-      return;
-    }
+    mutationLoginUser.mutate(data)
+
     if (state.closeLoginUser) {
       dispatch({
-        type: actionsType.CLOSE_LOGIN_USER,
-      });
+        type: actionsType.CLOSE_LOGIN_USER
+      })
     }
-    dispatch({ type: actionsType.CLOSE_CREATE_USER });
-    reset();
-  };
+    dispatch({ type: actionsType.CLOSE_CREATE_USER })
+    reset()
+  }
 
   return (
     <FormProvider {...createUserForm}>
@@ -47,7 +42,7 @@ export const FormGetUser = () => {
         onSubmit={handleSubmit(handleFormSubmit)}
         className="flex justify-center flex-col gap-6 items-center w-full h-3/4"
       >
-        {localStorage.getItem("userName") && (
+        {localStorage.getItem('userName') && (
           <span className="text-red-500">You are already logged in</span>
         )}
         {mutationLoginUser.isError && (
@@ -95,5 +90,5 @@ export const FormGetUser = () => {
         />
       </form>
     </FormProvider>
-  );
-};
+  )
+}

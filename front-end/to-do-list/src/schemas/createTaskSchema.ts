@@ -1,18 +1,18 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 export const createTaskSchema = z.object({
   title: z
     .string()
-    .min(1, "Title is required")
+    .min(1, 'Title is required')
     .max(50)
     .transform((name) => {
       return name
         .trim()
-        .split(" ")
+        .split(' ')
         .map((word) => word[0].toLocaleUpperCase().concat(word.substring(1)))
-        .join(" ");
+        .join(' ')
     }),
-  description: z.string().min(1, "Description is required").max(100),
-});
+  description: z.string().min(1, 'Description is required').max(100)
+})
 
-export type CreateTaskProp = z.infer<typeof createTaskSchema>;
+export type CreateTaskProp = z.infer<typeof createTaskSchema>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
-import { ContextClicks } from ".";
+import { useContext } from 'react'
+import { ContextClicks } from '.'
 
-export const useContextClick = () => useContext(ContextClicks);
+export const useContextClick = () => useContext(ContextClicks)
