@@ -1,14 +1,17 @@
-import { AuthUser } from '../Auth/authUser'
+import { AuthUser } from '../Auth/AuthUser'
 import { connect } from '../database'
 import { User } from '../types/user'
 
 export const usersBD = async (email: string, password: string) => {
-  const conn = await connect()
-  const [user] = await conn.query(
-    `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
-  )
+  const authUser = new AuthUser()
 
+  const user = await authUser.getUser(email, password)
   return user
+}
+
+export const sessionUser = (token: string) => {
+  const authUser = new AuthUser()
+  return authUser.verifyToken(token)
 }
 
 export const createUserBD = async (user: User) => {
@@ -31,8 +34,8 @@ export const updatedUserBD = async (id: string, user: User) => {
   return updatedUser
 }
 
-export const deleteUserBD = async (id: string) => {
-  const conn = await connect()
-  const [deletedUser] = await conn.query('DELETE FROM users WHERE id = ?', [id])
+export const deleteUserBD = async (token: string) => {
+  const auth = new AuthUser()
+  const deletedUser = await auth.deleteUser(token)
   return deletedUser
 }

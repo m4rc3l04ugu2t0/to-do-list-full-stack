@@ -1,40 +1,40 @@
-import { connect } from '../database'
+import { AuthUser } from '../Auth/AuthUser'
 import Tasks from '../types/tasks'
 
 // model user
 
-export const getTasksByUserBD = async (id: string) => {
-  const tasks = await connect()
-  const [result] = await tasks.query('SELECT * FROM tasks WHERE user_id = ?', [
-    id
-  ])
-  return result
+export const getTasksByUserBD = async (token: string) => {
+  const authUser = new AuthUser()
+
+  const tasks = await authUser.userTasks(token)
+
+  if (!tasks) return false
+
+  return tasks
 }
 
-export const createTaskByUserBD = async (task: Tasks, id: string) => {
-  const conn = await connect()
+export const createTaskByUserBD = async (task: Tasks, token: string) => {
+  const authUser = new AuthUser()
 
-  const [result] = await conn.query('INSERT INTO tasks SET ?', {
-    ...task,
-    done: false,
-    user_id: id
-  })
-  return result
+  const tasks = await authUser.createTaskByUser(task, token)
+
+  return tasks
 }
 
-export const deleteTaskBD = async (id: string) => {
-  const conn = await connect()
-  const [deleteTaskBD] = await conn.query('DELETE FROM tasks WHERE id = ?', [
-    id
-  ])
-  return deleteTaskBD
+export const deleteTaskBD = async (id: string, token: string) => {
+  const authUser = new AuthUser()
+  console.log(id, 'idddd')
+  const deletedTask = await authUser.deleteTasks(id, token)
+  return deletedTask
 }
 
-export const updatedTaskBD = async (id: string, task: Tasks) => {
-  const conn = await connect()
-  const [updatedTask] = await conn.query('UPDATE tasks SET ? WHERE id = ?', [
-    task,
-    id
-  ])
+export const updatedTaskBD = async (id: string, task: Tasks, token: string) => {
+  const authUser = new AuthUser()
+
+  const verifyToken = authUser.verifyToken(token)
+
+  if (!verifyToken) return false
+
+  const updatedTask = await authUser.updatedTask(id, task)
   return updatedTask
 }
