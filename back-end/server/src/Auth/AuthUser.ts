@@ -4,20 +4,17 @@ import jwt from 'jsonwebtoken'
 import Tasks from '../types/tasks'
 
 export class AuthUser {
-  name: string
-  email: string
-  password: string
-
-  constructor(name = '', email = '', password = '') {
-    this.name = name
-    this.email = email
-    this.password = password
-  }
-
   verifyToken(token: string) {
     const verifyToken = jwt.verify(token, 'secret-pass-token')
 
     return verifyToken as { id: string; name: string; email: string }
+  }
+
+  tokenGenerate(id: string, name: string, email: string) {
+    const token = jwt.sign({ id, name, email }, 'secret-password-token', {
+      expiresIn: '1d'
+    })
+    return token
   }
 
   useAuthorizationToken(token: string) {
@@ -34,13 +31,6 @@ export class AuthUser {
     const salt = bcrypt.genSaltSync(10)
     const hash = bcrypt.hashSync(password, salt)
     return hash
-  }
-
-  tokenGenerate(id: string, name: string, email: string) {
-    const token = jwt.sign({ id, name, email }, 'secret-password-token', {
-      expiresIn: '1d'
-    })
-    return token
   }
 
   async getUser(email: string, password: string) {
@@ -66,40 +56,6 @@ export class AuthUser {
     return false
   }
 
-  async userTasks(email: string) {
-    const decodedToken = this.verifyToken(email)
-    if (!decodedToken.email) return false
-    console.log('decodedToken', decodedToken)
-    const conn = await connect()
-    const [rows] = await conn.query(
-      `SELECT * FROM tasks WHERE user_id = '${decodedToken.id}'`
-    )
-    return rows
-  }
-
-  async updatedTask(id: string, task: Tasks) {
-    const conn = await connect()
-    const [updatedTask] = await conn.query('UPDATE tasks SET ? WHERE id = ?', [
-      task,
-      id
-    ])
-    return updatedTask
-  }
-
-  async createTaskByUser(task: Tasks, token: string) {
-    const decodedToken = this.verifyToken(token)
-    if (!decodedToken.email) return false
-    console.log('decodedToken', decodedToken)
-
-    const conn = await connect()
-    const [result] = await conn.query('INSERT INTO tasks SET ?', {
-      ...task,
-      done: false,
-      user_id: decodedToken.id
-    })
-    return result
-  }
-
   async createUser(name: string, email: string, password: string) {
     const hash = this.hashPassword(password)
     const dataUserValid = { name, email, password: hash }
@@ -119,19 +75,6 @@ export class AuthUser {
     }
   }
 
-  async deleteTasks(id: string, token: string) {
-    const decodedToken = this.verifyToken(token)
-
-    if (!decodedToken) return false
-
-    const conn = await connect()
-    const [deleteTaskBD] = await conn.query('DELETE FROM tasks WHERE id = ?', [
-      id
-    ])
-
-    return deleteTaskBD
-  }
-
   async deleteUser(token: string) {
     const decodedToken = this.verifyToken(token)
 
@@ -143,6 +86,53 @@ export class AuthUser {
     ])
 
     return deletedUser
+  }
+
+  async userTasks(email: string) {
+    const decodedToken = this.verifyToken(email)
+    if (!decodedToken.email) return false
+    console.log('decodedToken', decodedToken)
+    const conn = await connect()
+    const [rows] = await conn.query(
+      `SELECT * FROM tasks WHERE user_id = '${decodedToken.id}'`
+    )
+    return rows
+  }
+
+  async createTaskByUser(task: Tasks, token: string) {
+    const decodedToken = this.verifyToken(token)
+    if (!decodedToken.email) return false
+    console.log('decodedToken', decodedToken)
+
+    const conn = await connect()
+    const [result] = await conn.query('INSERT INTO tasks SET ?', {
+      ...task,
+      done: false,
+      user_id: decodedToken.id
+    })
+    return result
+  }
+
+  async updatedTask(id: string, task: Tasks) {
+    const conn = await connect()
+    const [updatedTask] = await conn.query('UPDATE tasks SET ? WHERE id = ?', [
+      task,
+      id
+    ])
+    return updatedTask
+  }
+
+  async deleteTasks(id: string, token: string) {
+    const decodedToken = this.verifyToken(token)
+
+    if (!decodedToken) return false
+
+    const conn = await connect()
+    const [deleteTaskBD] = await conn.query('DELETE FROM tasks WHERE id = ?', [
+      id
+    ])
+
+    return deleteTaskBD
   }
 
   checkEmail(email: string) {

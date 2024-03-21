@@ -3,16 +3,20 @@ import { PropTasks } from '../types/tasksTypes'
 import { User } from '../types/userTypes'
 
 const BASE_URL = 'http://localhost:3000/user'
-const userId = localStorage.getItem('sessionToken')
 
 export const authorizationUser = async () => {
   if (!localStorage.getItem('sessionToken')) return { name: 'Login' }
-  const response = await axios.get(`${BASE_URL}/authorization`, {
-    headers: {
-      Authorization: `Bearer $Bearer ${localStorage.getItem('sessionToken')}`
-    }
-  })
-  return await response.data
+  try {
+    const response = await axios.get(`${BASE_URL}/authorization`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('sessionToken')}`
+      }
+    })
+    return await response.data
+  } catch (error) {
+    console.log(error)
+    return { name: 'Login' }
+  }
 }
 
 export const getIdUser = async () => {
@@ -67,7 +71,11 @@ export const updateTask = async (data: {
   description: string
   done?: boolean
 }) => {
-  await axios.put(`${BASE_URL}/${userId}/task/${data.id}`, data)
+  await axios.put(`${BASE_URL}/task/${data.id}`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('sessionToken')}`
+    }
+  })
 }
 
 export const deleteTask = async (id: string) => {
